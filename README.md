@@ -1,14 +1,8 @@
 # Material Sudoku
 
-[Sudoku made for Android](https://jdam.cd/sudoku/)
+This is a clean and simple sudoku game, designed to feel at home on the Android platform. It was first published in 2013 as "Holo Sudoku", before being updated with the Material design language in early 2015. It was featured on Google Play and downloaded over a million times in its first year.
 
-Available via Google Play:
-* [Sudoku](https://play.google.com/store/apps/details?id=com.jdamcd.sudoku)
-* [Solver](https://play.google.com/store/apps/details?id=com.jdamcd.sudokusolver)
-
-First published in January 2013, this is a clean and simple sudoku game, designed to feel at home on the Android platform. It was called "Holo Sudoku" before being updated with the Material design language in early 2015.
-
-The game was featured on Google Play and downloaded over a million times in the first year. It's gotten a light refresh every couple of years since then. This time round, I've stripped it back to basics (removing some rarely used features like Google Play Games) and released the source code.
+As of 2021 this project is unmaintained.
 
 ## Screenshots
 
