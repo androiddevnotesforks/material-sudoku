@@ -8,7 +8,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jdamcd.sudoku.R
 
 internal class RandomFabView : ViewPager.OnPageChangeListener {
-
     private lateinit var fab: FloatingActionButton
     private lateinit var fabColours: IntArray
 
@@ -18,13 +17,15 @@ internal class RandomFabView : ViewPager.OnPageChangeListener {
         setBackground(colourAtPosition(1))
     }
 
-    private fun colourAtPosition(position: Int): Int {
-        return fabColours[position % fabColours.size]
-    }
+    private fun colourAtPosition(position: Int): Int = fabColours[position % fabColours.size]
 
     override fun onPageScrollStateChanged(state: Int) {}
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    override fun onPageScrolled(
+        position: Int,
+        positionOffset: Float,
+        positionOffsetPixels: Int,
+    ) {}
 
     override fun onPageSelected(position: Int) {
         animateBackgroundChange(position)

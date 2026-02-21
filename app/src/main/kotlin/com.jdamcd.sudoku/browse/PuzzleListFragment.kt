@@ -15,20 +15,29 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PuzzleListFragment : Fragment(), PuzzleListPresenter.View {
-
+class PuzzleListFragment :
+    Fragment(),
+    PuzzleListPresenter.View {
     @Inject internal lateinit var presenter: PuzzleListPresenter
+
     @Inject internal lateinit var adapter: PuzzleAdapter
 
     private var _binding: FragmentRecyclerPuzzlesBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentRecyclerPuzzlesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         binding.recyclerView.addItemDecoration(OffsetDecoration(requireContext(), R.dimen.half_gutter))
         (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         presenter.start(this)

@@ -25,8 +25,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 
-class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
-
+class SolverFragment :
+    Fragment(),
+    OnClickListener,
+    OnCellSelectedListener {
     private var puzzle: Sudoku? = null
     private lateinit var puzzleView: InteractivePuzzleView
     private lateinit var clearButton: ImageButton
@@ -39,7 +41,11 @@ class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         val layout = inflater.inflate(R.layout.fragment_solver, container, false)
         puzzleView = layout.findViewById(R.id.puzzle_board)
         puzzleView.setOnCellSelectedListener(this)
@@ -100,7 +106,10 @@ class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         inflater.inflate(R.menu.activity_solver, menu)
     }
 
@@ -161,9 +170,11 @@ class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
         }
     }
 
-    private fun isCurrentCellValue(row: Int, col: Int, value: Int): Boolean {
-        return puzzle?.getCellValue(row, col) == value
-    }
+    private fun isCurrentCellValue(
+        row: Int,
+        col: Int,
+        value: Int,
+    ): Boolean = puzzle?.getCellValue(row, col) == value
 
     override fun onCellSelected(position: CellPosition) {
         updateClearButtonState()
@@ -185,19 +196,21 @@ class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
     }
 
     private fun solve() {
-        disposable = Single.fromCallable { puzzle?.solve() }
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    setViewsEnabled(false)
-                    resetCursor()
-                },
-                {
-                    showMessage(R.string.toast_no_solution)
-                    resetCursor()
-                }
-            )
+        disposable =
+            Single
+                .fromCallable { puzzle?.solve() }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        setViewsEnabled(false)
+                        resetCursor()
+                    },
+                    {
+                        showMessage(R.string.toast_no_solution)
+                        resetCursor()
+                    },
+                )
     }
 
     private fun resetCursor() {
@@ -205,7 +218,9 @@ class SolverFragment : Fragment(), OnClickListener, OnCellSelectedListener {
         puzzleView.invalidate()
     }
 
-    private fun showMessage(@StringRes messageId: Int) {
+    private fun showMessage(
+        @StringRes messageId: Int,
+    ) {
         view?.let {
             Snackbar.make(it, messageId, Snackbar.LENGTH_SHORT).show()
         }

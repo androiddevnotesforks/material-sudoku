@@ -8,7 +8,6 @@ import java.io.IOException
 import java.nio.file.FileSystems
 
 class PackagedPuzzlesTest {
-
     @Test
     @Throws(IOException::class, UnsolvablePuzzleException::class)
     fun solvesEasyPuzzles() {

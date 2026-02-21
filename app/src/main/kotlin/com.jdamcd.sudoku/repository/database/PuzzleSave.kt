@@ -8,23 +8,27 @@ data class PuzzleSave(
     val bookmarked: Boolean,
     val progress: Int,
     val completed: Boolean,
-    val cheats: Int
+    val cheats: Int,
 ) {
-
     companion object {
+        fun forRestart(id: Long) =
+            PuzzleSave(
+                id,
+                null,
+                null,
+                0,
+                true,
+                0,
+                false,
+                0,
+            )
 
-        fun forRestart(id: Long) = PuzzleSave(
-            id,
-            null,
-            null,
-            0,
-            true,
-            0,
-            false,
-            0
-        )
-
-        fun forCompleted(id: Long, game: String, time: Long, cheats: Int) = PuzzleSave(
+        fun forCompleted(
+            id: Long,
+            game: String,
+            time: Long,
+            cheats: Int,
+        ) = PuzzleSave(
             id,
             game,
             null,
@@ -32,7 +36,7 @@ data class PuzzleSave(
             false,
             100,
             true,
-            cheats
+            cheats,
         )
     }
 }

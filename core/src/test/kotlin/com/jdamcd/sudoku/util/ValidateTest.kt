@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ValidateTest {
-
     private lateinit var validPuzzle: Array<IntArray>
     private lateinit var invalidPuzzle: Array<IntArray>
 

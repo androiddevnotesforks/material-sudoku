@@ -12,8 +12,10 @@ import com.jdamcd.sudokusolver.R
 import kotlin.math.max
 import kotlin.math.min
 
-abstract class PuzzleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-
+abstract class PuzzleView(
+    context: Context,
+    attrs: AttributeSet,
+) : View(context, attrs) {
     protected var puzzleData: Sudoku? = null
 
     protected var cellWidth: Float = 0.toFloat()
@@ -36,7 +38,10 @@ abstract class PuzzleView(context: Context, attrs: AttributeSet) : View(context,
         setAttributes(context, attrs)
     }
 
-    private fun setAttributes(context: Context, attrs: AttributeSet) {
+    private fun setAttributes(
+        context: Context,
+        attrs: AttributeSet,
+    ) {
         val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.PuzzleView, 0, 0)
         try {
             lineStroke = attributes.getDimension(R.styleable.PuzzleView_lineStroke, 1f)
@@ -52,12 +57,20 @@ abstract class PuzzleView(context: Context, attrs: AttributeSet) : View(context,
         invalidate()
     }
 
-    public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    public override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         val smallestSide = min(widthMeasureSpec, heightMeasureSpec)
         super.onMeasure(smallestSide, smallestSide)
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+    override fun onSizeChanged(
+        width: Int,
+        height: Int,
+        oldWidth: Int,
+        oldHeight: Int,
+    ) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         cellHeight = (height / 9).toFloat()
         cellWidth = (width / 9).toFloat()
@@ -142,7 +155,7 @@ abstract class PuzzleView(context: Context, attrs: AttributeSet) : View(context,
                         puzzleData!!.getCellValue(row, col).toString(),
                         padWidth + col * cellWidth + digitX,
                         padHeight + row * cellHeight + digitY,
-                        givens
+                        givens,
                     )
                 }
             }

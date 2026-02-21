@@ -26,42 +26,58 @@ import io.reactivex.subjects.Subject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class PuzzleAdapter @Inject constructor() :
-    ListAdapter<Puzzle, PuzzleViewHolder>(diffCallback) {
+class PuzzleAdapter
+    @Inject
+    constructor() : ListAdapter<Puzzle, PuzzleViewHolder>(diffCallback) {
+        private val clickSubject = PublishSubject.create<Puzzle>()
 
-    private val clickSubject = PublishSubject.create<Puzzle>()
+        init {
+            setHasStableIds(true)
+        }
 
-    init {
-        setHasStableIds(true)
-    }
+        fun itemClicked(): Observable<Puzzle> = clickSubject
 
-    fun itemClicked(): Observable<Puzzle> = clickSubject
+        override fun onBindViewHolder(
+            holder: PuzzleViewHolder,
+            position: Int,
+        ) = holder.bind(getItem(position), clickSubject)
 
-    override fun onBindViewHolder(holder: PuzzleViewHolder, position: Int) = holder.bind(getItem(position), clickSubject)
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ) = PuzzleViewHolder(parent.inflate(R.layout.card_puzzle))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PuzzleViewHolder(parent.inflate(R.layout.card_puzzle))
+        override fun getItemId(position: Int): Long = getItem(position).id
 
-    override fun getItemId(position: Int): Long {
-        return getItem(position).id
-    }
+        companion object {
+            private val diffCallback =
+                object : DiffUtil.ItemCallback<Puzzle>() {
+                    override fun areItemsTheSame(
+                        @NonNull oldPuzzle: Puzzle,
+                        @NonNull newPuzzle: Puzzle,
+                    ) = oldPuzzle.id == newPuzzle.id
 
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Puzzle>() {
-            override fun areItemsTheSame(@NonNull oldPuzzle: Puzzle, @NonNull newPuzzle: Puzzle) = oldPuzzle.id == newPuzzle.id
-            override fun areContentsTheSame(@NonNull oldPuzzle: Puzzle, @NonNull newPuzzle: Puzzle) = oldPuzzle == newPuzzle
+                    override fun areContentsTheSame(
+                        @NonNull oldPuzzle: Puzzle,
+                        @NonNull newPuzzle: Puzzle,
+                    ) = oldPuzzle == newPuzzle
+                }
         }
     }
-}
 
-class PuzzleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+class PuzzleViewHolder(
+    itemView: View,
+) : RecyclerView.ViewHolder(itemView) {
     private val title: TextView = itemView.findViewById(R.id.puzzle_title)
     private val time: TextView = itemView.findViewById(R.id.puzzle_time)
     private val preview: PreviewPuzzleView = itemView.findViewById(R.id.puzzle_preview)
     private val progress: ProgressBar = itemView.findViewById(R.id.puzzle_progress)
     private val bookmark: View = itemView.findViewById(R.id.puzzle_bookmark)
 
-    fun bind(item: Puzzle, clickSubject: Subject<Puzzle>) {
+    fun bind(
+        item: Puzzle,
+        clickSubject: Subject<Puzzle>,
+    ) {
         setTitle(item)
         setTime(item)
         preview.setGame(item.game)
@@ -78,7 +94,7 @@ class PuzzleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             ForegroundColorSpan(ContextCompat.getColor(itemView.context, R.color.primary)),
             item.title.length - (numberLength + 1),
             item.title.length,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE,
         )
         title.text = builder
     }
@@ -89,9 +105,10 @@ class PuzzleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         time.visibility = if (showTime) View.VISIBLE else View.GONE
     }
 
-    private fun getProgressDrawable(context: Context, level: Level): Drawable {
-        return ContextCompat.getDrawable(context, Level.progressDrawable(level))!!
-    }
+    private fun getProgressDrawable(
+        context: Context,
+        level: Level,
+    ): Drawable = ContextCompat.getDrawable(context, Level.progressDrawable(level))!!
 
     companion object {
         private val minDisplayTime = TimeUnit.SECONDS.toMillis(5)

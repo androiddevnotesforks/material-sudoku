@@ -8,7 +8,6 @@ import io.reactivex.Single
 
 @Dao
 abstract class PuzzleDao {
-
     @Query("SELECT * FROM puzzles WHERE _id = :id")
     abstract fun getPuzzle(id: Long): Single<PuzzleLoad>
 
@@ -30,11 +29,25 @@ abstract class PuzzleDao {
     @Query("SELECT * FROM puzzles WHERE _id in(:ids)")
     abstract fun getPuzzles(ids: Set<Long>): List<PuzzleLoad>
 
-    @Query("UPDATE puzzles SET game=:game, notes=:notes, time=:time, bookmarked=:bookmarked, progress=:progress, completed=:completed, cheats=:cheats WHERE _id=:id")
-    abstract fun updatePuzzle(id: Long, game: String?, notes: String?, time: Long, bookmarked: Boolean, progress: Int, completed: Boolean, cheats: Int): Int
+    @Query(
+        "UPDATE puzzles SET game=:game, notes=:notes, time=:time, bookmarked=:bookmarked, progress=:progress, completed=:completed, cheats=:cheats WHERE _id=:id",
+    )
+    abstract fun updatePuzzle(
+        id: Long,
+        game: String?,
+        notes: String?,
+        time: Long,
+        bookmarked: Boolean,
+        progress: Int,
+        completed: Boolean,
+        cheats: Int,
+    ): Int
 
     @Query("UPDATE puzzles SET bookmarked=:isBookmarked WHERE _id=:id")
-    abstract fun updateBookmark(id: Long, isBookmarked: Boolean)
+    abstract fun updateBookmark(
+        id: Long,
+        isBookmarked: Boolean,
+    )
 
     @Query("UPDATE puzzles SET bookmarked = 0")
     abstract fun removeAllBookmarks()
@@ -50,7 +63,7 @@ abstract class PuzzleDao {
                 save.bookmarked,
                 save.progress,
                 save.completed,
-                save.cheats
+                save.cheats,
             )
         }
     }
@@ -58,8 +71,7 @@ abstract class PuzzleDao {
     @Transaction
     open fun bulkGetPuzzles(ids: Set<Long>): List<PuzzleLoad> {
         val result = mutableListOf<PuzzleLoad>()
-        ids.chunked(CHUNK_SIZE) {
-            subset: List<Long> ->
+        ids.chunked(CHUNK_SIZE) { subset: List<Long> ->
             result.addAll(getPuzzles(subset.toSet()))
         }
         return result

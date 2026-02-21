@@ -6,7 +6,6 @@ import io.reactivex.disposables.Disposable
 
 @Deprecated("Migrate to ViewModel")
 open class Presenter<V : PresenterView> {
-
     private val disposables = CompositeDisposable()
     protected var view: V? = null
 

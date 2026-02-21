@@ -7,8 +7,9 @@ import android.util.AttributeSet
 import android.widget.Checkable
 import androidx.appcompat.widget.AppCompatImageButton
 
-class CheckableImageButton : AppCompatImageButton, Checkable {
-
+class CheckableImageButton :
+    AppCompatImageButton,
+    Checkable {
     private var isChecked = false
 
     constructor(context: Context) : super(context)
@@ -69,22 +70,23 @@ class CheckableImageButton : AppCompatImageButton, Checkable {
             enabled = values[1]
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
+        override fun writeToParcel(
+            out: Parcel,
+            flags: Int,
+        ) {
             super.writeToParcel(out, flags)
             out.writeBooleanArray(booleanArrayOf(checked, enabled))
         }
 
         companion object {
-            @JvmField @Suppress("unused")
-            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
-                override fun createFromParcel(parcel: Parcel): SavedState {
-                    return SavedState(parcel)
-                }
+            @JvmField
+            @Suppress("unused")
+            val CREATOR: Parcelable.Creator<SavedState> =
+                object : Parcelable.Creator<SavedState> {
+                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel)
 
-                override fun newArray(size: Int): Array<SavedState?> {
-                    return arrayOfNulls(size)
+                    override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
                 }
-            }
         }
     }
 

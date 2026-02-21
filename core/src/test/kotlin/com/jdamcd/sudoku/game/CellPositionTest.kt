@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class CellPositionTest {
-
     @Test
     fun defaultPositionIsNotSet() {
         val position = CellPosition()

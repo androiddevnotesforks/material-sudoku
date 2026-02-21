@@ -1,7 +1,8 @@
 package com.jdamcd.sudoku.solver.dancinglinks
 
-internal class ColumnNode(label: Int) : Node(0, label, null) {
-
+internal class ColumnNode(
+    label: Int,
+) : Node(0, label, null) {
     var count: Int = 0 // Rows with 1 in column
         private set
 

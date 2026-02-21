@@ -10,8 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PuzzleActivity : BaseActivity(), PuzzleFragment.PuzzleContract {
-
+class PuzzleActivity :
+    BaseActivity(),
+    PuzzleFragment.PuzzleContract {
     @Inject lateinit var settings: Settings
 
     private var puzzleId: Long = 0

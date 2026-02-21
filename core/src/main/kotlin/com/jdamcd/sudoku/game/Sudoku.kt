@@ -6,7 +6,6 @@ import com.jdamcd.sudoku.util.Format
 import com.jdamcd.sudoku.util.Validate
 
 class Sudoku {
-
     val givens: Array<IntArray>
     var solution: Array<IntArray>? = null
 
@@ -25,9 +24,16 @@ class Sudoku {
         this.givens = Format.gridFromArray(givens)
     }
 
-    fun getCellValue(row: Int, col: Int): Int = givens[row][col]
+    fun getCellValue(
+        row: Int,
+        col: Int,
+    ): Int = givens[row][col]
 
-    fun setCellValue(row: Int, col: Int, value: Int) {
+    fun setCellValue(
+        row: Int,
+        col: Int,
+        value: Int,
+    ) {
         givens[row][col] = value
     }
 
@@ -40,15 +46,27 @@ class Sudoku {
         this.solution = Format.gridFromArray(solution)
     }
 
-    fun getSolutionCellValue(row: Int, col: Int): Int = solution!![row][col]
+    fun getSolutionCellValue(
+        row: Int,
+        col: Int,
+    ): Int = solution!![row][col]
 
     fun validate(): Boolean = Validate.isValid(givens)
 
-    fun isValidColumn(row: Int, col: Int): Boolean = Validate.isValidColumn(row, col, givens)
+    fun isValidColumn(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidColumn(row, col, givens)
 
-    fun isValidRow(row: Int, col: Int): Boolean = Validate.isValidRow(row, col, givens)
+    fun isValidRow(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidRow(row, col, givens)
 
-    fun isValidBox(row: Int, col: Int): Boolean = Validate.isValidBox(row, col, givens)
+    fun isValidBox(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidBox(row, col, givens)
 
     override fun toString(): String = Format.prettyStringFromGrid(givens)
 
@@ -58,8 +76,9 @@ class Sudoku {
 
         other as Sudoku
 
-        val equalSolution = (solution == null && other.solution == null) ||
-            (solution != null && other.solution != null && solution!!.contentDeepEquals(other.solution!!))
+        val equalSolution =
+            (solution == null && other.solution == null) ||
+                (solution != null && other.solution != null && solution!!.contentDeepEquals(other.solution!!))
 
         return givens contentDeepEquals other.givens && equalSolution
     }

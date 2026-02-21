@@ -1,7 +1,8 @@
 package com.jdamcd.sudoku.solver.dancinglinks
 
-internal class DancingLinksArena constructor(labels: IntArray) {
-
+internal class DancingLinksArena constructor(
+    labels: IntArray,
+) {
     private val firstColumn: ColumnNode
     private val solution: Array<Node?>
     private var rowCount: Int = 0
@@ -130,8 +131,9 @@ internal class DancingLinksArena constructor(labels: IntArray) {
 
                 searcher = firstColumn
                 do {
-                    if (searcher.label == label)
+                    if (searcher.label == label) {
                         col = searcher
+                    }
 
                     searcher = searcher.right as ColumnNode
                 } while (searcher != firstColumn && col == null)
@@ -207,7 +209,6 @@ internal class DancingLinksArena constructor(labels: IntArray) {
 
     // Remove already known portions of the solution space
     fun removeInitialSolutionSet(solutions: List<Node>): Boolean {
-
         for (row in solutions) {
             if (row.down?.up !== row) {
                 // Row was removed from arena - inconsistent

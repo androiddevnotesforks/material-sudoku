@@ -22,10 +22,13 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PuzzleChoiceActivity : BaseActivity(), PuzzleChoicePresenter.View {
-
+class PuzzleChoiceActivity :
+    BaseActivity(),
+    PuzzleChoicePresenter.View {
     @Inject internal lateinit var presenter: PuzzleChoicePresenter
+
     @Inject internal lateinit var intents: IntentFactory
+
     @Inject internal lateinit var settings: Settings
 
     private val toggleSubject = PublishSubject.create<Boolean>()
@@ -133,7 +136,8 @@ class PuzzleChoiceActivity : BaseActivity(), PuzzleChoicePresenter.View {
 
     override fun showRatingPrompt() {
         val reviewManager = ReviewManagerFactory.create(this)
-        reviewManager.requestReviewFlow()
+        reviewManager
+            .requestReviewFlow()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     reviewManager.launchReviewFlow(this, it.result)

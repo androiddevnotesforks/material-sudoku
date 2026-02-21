@@ -8,9 +8,7 @@ import java.util.Random
 
 fun <E> List<E>.randomElement() = this[Random().nextInt(this.size)]
 
-fun ViewGroup.inflate(layoutRes: Int): View {
-    return LayoutInflater.from(context).inflate(layoutRes, this, false)
-}
+fun ViewGroup.inflate(layoutRes: Int): View = LayoutInflater.from(context).inflate(layoutRes, this, false)
 
 fun View.snackbar(stringId: Int) {
     Snackbar.make(this, stringId, Snackbar.LENGTH_SHORT).show()

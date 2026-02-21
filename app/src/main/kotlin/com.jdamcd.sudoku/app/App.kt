@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class App : Application() {
-
     @Inject lateinit var settings: Settings
 
     override fun onCreate() {
@@ -29,7 +28,7 @@ class App : Application() {
                 settings.useSystemTheme -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 settings.nightMode -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> AppCompatDelegate.MODE_NIGHT_NO
-            }
+            },
         )
     }
 }

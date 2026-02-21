@@ -9,9 +9,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity() {
-
     @Inject lateinit var intents: IntentFactory
+
     @Inject lateinit var shortcuts: ShortcutController
+
     @Inject lateinit var settings: Settings
 
     override fun onCreate(savedInstanceState: Bundle?) {

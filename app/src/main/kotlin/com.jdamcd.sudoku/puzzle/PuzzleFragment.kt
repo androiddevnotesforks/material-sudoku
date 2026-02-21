@@ -26,8 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
-
+class PuzzleFragment :
+    Fragment(),
+    ConfirmRestartDialog.RestartContract {
     @Inject lateinit var settings: Settings
     private val viewModel: PuzzleViewModel by viewModels()
 
@@ -45,7 +46,9 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
 
     internal interface PuzzleContract {
         fun setPuzzleName(name: String)
+
         fun setTime(time: String)
+
         fun invalidateMenu()
     }
 
@@ -56,20 +59,26 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         puzzleId = requireActivity().intent.getLongExtra(PuzzleActivity.EXTRA_PUZZLE_ID, -1)
-        timer = PuzzleTimer(
-            object : UpdateCallback {
-                override fun update(time: String) {
-                    hostActivity.setTime(time)
-                }
-            }
-        )
+        timer =
+            PuzzleTimer(
+                object : UpdateCallback {
+                    override fun update(time: String) {
+                        hostActivity.setTime(time)
+                    }
+                },
+            )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_puzzle, container, false)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View = inflater.inflate(R.layout.fragment_puzzle, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         findViews(view)
         viewModel.uiModel.observe(viewLifecycleOwner) {
@@ -82,18 +91,19 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
     }
 
     private fun findViews(root: View) {
-        keypad = PuzzleKeypad(
-            root,
-            this::setCursorCell,
-            this::setCursorNote,
-            onClearValue = {
-                clearCell(boardView.cursorPosition)
-                onCellChanged()
-            },
-            onToggleNotes = {
-                invalidateUIState()
-            }
-        )
+        keypad =
+            PuzzleKeypad(
+                root,
+                this::setCursorCell,
+                this::setCursorNote,
+                onClearValue = {
+                    clearCell(boardView.cursorPosition)
+                    onCellChanged()
+                },
+                onToggleNotes = {
+                    invalidateUIState()
+                },
+            )
         boardView = root.findViewById(R.id.puzzle_board)
     }
 
@@ -124,7 +134,7 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
                 override fun onCellSelected(position: CellPosition) {
                     invalidateUIState()
                 }
-            }
+            },
         )
         keypad.setupListeners()
     }
@@ -156,8 +166,8 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
                 isBookmarked,
                 game.getPercentageCorrect(),
                 isCompleted,
-                game.numberOfCheats
-            )
+                game.numberOfCheats,
+            ),
         )
         if (!isCompleted && game.getNumberOfCorrectAnswers() > 0) {
             viewModel.enableResume(puzzleId)
@@ -170,13 +180,16 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
                 puzzleId,
                 Format.stringFromGrid(game.answers),
                 timer.getTime(),
-                game.numberOfCheats
-            )
+                game.numberOfCheats,
+            ),
         )
         viewModel.disableResume()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         if (!::game.isInitialized) {
             return super.onCreateOptionsMenu(menu, inflater)
         }
@@ -298,7 +311,10 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
         }
     }
 
-    private fun answerCell(cursor: CellPosition, value: Int) {
+    private fun answerCell(
+        cursor: CellPosition,
+        value: Int,
+    ) {
         if (game.getAnswer(cursor.row, cursor.col) == value) {
             game.setAnswer(cursor.row, cursor.col, 0)
         } else {
@@ -328,17 +344,15 @@ class PuzzleFragment : Fragment(), ConfirmRestartDialog.RestartContract {
         val isGivenSelected = isGivenSelected(cursor)
         keypad.setNumbersEnabled(!isGivenSelected)
         keypad.setNotesEnabled(!isGivenSelected && cursor.isSet() && !game.hasAnswer(cursor.row, cursor.col))
-        keypad.setClearEnabled(!isGivenSelected && cursor.isSet() && (game.hasAnswer(cursor.row, cursor.col) || game.hasNotes(cursor.row, cursor.col)))
+        keypad.setClearEnabled(
+            !isGivenSelected && cursor.isSet() && (game.hasAnswer(cursor.row, cursor.col) || game.hasNotes(cursor.row, cursor.col)),
+        )
         keypad.disableSolvedDigits(BooleanArray(9) { game.isSolvedDigit(it + 1) })
     }
 
-    private fun isEmptySelected(cursor: CellPosition = boardView.cursorPosition): Boolean {
-        return if (cursor.isSet()) game.isEmpty(cursor.row, cursor.col) else false
-    }
+    private fun isEmptySelected(cursor: CellPosition = boardView.cursorPosition): Boolean = if (cursor.isSet()) game.isEmpty(cursor.row, cursor.col) else false
 
-    private fun isGivenSelected(cursor: CellPosition = boardView.cursorPosition): Boolean {
-        return if (cursor.isSet()) game.isGiven(cursor.row, cursor.col) else false
-    }
+    private fun isGivenSelected(cursor: CellPosition = boardView.cursorPosition): Boolean = if (cursor.isSet()) game.isGiven(cursor.row, cursor.col) else false
 
     private fun cheatCell() {
         if (!game.isSolutionAvailable()) return

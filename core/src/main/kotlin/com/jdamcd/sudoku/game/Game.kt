@@ -13,7 +13,6 @@ import java.util.Random
 import java.util.Stack
 
 class Game {
-
     val sudoku: Sudoku
     var answers: Array<IntArray>
     var notes: Array<IntArray>
@@ -61,17 +60,36 @@ class Game {
 
     fun isCompleted(): Boolean = sudoku.isSolution && Arrays.deepEquals(answers, sudoku.solution)
 
-    fun getGiven(row: Int, col: Int): Int = sudoku.getCellValue(row, col)
+    fun getGiven(
+        row: Int,
+        col: Int,
+    ): Int = sudoku.getCellValue(row, col)
 
-    fun getAnswer(row: Int, col: Int): Int = answers[row][col]
+    fun getAnswer(
+        row: Int,
+        col: Int,
+    ): Int = answers[row][col]
 
-    fun isEmpty(row: Int, col: Int): Boolean = answers[row][col] == 0
+    fun isEmpty(
+        row: Int,
+        col: Int,
+    ): Boolean = answers[row][col] == 0
 
-    fun isGiven(row: Int, col: Int): Boolean = sudoku.getCellValue(row, col) != 0
+    fun isGiven(
+        row: Int,
+        col: Int,
+    ): Boolean = sudoku.getCellValue(row, col) != 0
 
-    fun getSolution(row: Int, col: Int): Int = sudoku.getSolutionCellValue(row, col)
+    fun getSolution(
+        row: Int,
+        col: Int,
+    ): Int = sudoku.getSolutionCellValue(row, col)
 
-    fun setAnswer(row: Int, col: Int, value: Int) {
+    fun setAnswer(
+        row: Int,
+        col: Int,
+        value: Int,
+    ) {
         moves.push(Answer(CellPosition(row, col), answers[row][col]))
         answers[row][col] = value
     }
@@ -97,22 +115,39 @@ class Game {
         return position
     }
 
-    fun hasAnswer(row: Int, col: Int): Boolean = answers[row][col] != 0
+    fun hasAnswer(
+        row: Int,
+        col: Int,
+    ): Boolean = answers[row][col] != 0
 
-    fun toggleNote(row: Int, col: Int, value: Int) {
+    fun toggleNote(
+        row: Int,
+        col: Int,
+        value: Int,
+    ) {
         val note = notes[row][col]
         moves.push(Note(CellPosition(row, col), note))
         notes[row][col] = note xor (1 shl value)
     }
 
-    fun hasNotes(row: Int, col: Int): Boolean = notes[row][col] != 0
+    fun hasNotes(
+        row: Int,
+        col: Int,
+    ): Boolean = notes[row][col] != 0
 
-    fun hasNote(row: Int, col: Int, value: Int): Boolean {
+    fun hasNote(
+        row: Int,
+        col: Int,
+        value: Int,
+    ): Boolean {
         val noteFlags = getNoteFlags(notes[row][col])
         return noteFlags[value]
     }
 
-    fun getNotes(row: Int, col: Int): IntArray {
+    fun getNotes(
+        row: Int,
+        col: Int,
+    ): IntArray {
         val noteFlags = getNoteFlags(notes[row][col])
 
         val noteDigits = noteFlags.indices.filterTo(LinkedList()) { noteFlags[it] }
@@ -129,7 +164,10 @@ class Game {
         return array
     }
 
-    fun clear(row: Int, col: Int) {
+    fun clear(
+        row: Int,
+        col: Int,
+    ) {
         moves.push(Clear(CellPosition(row, col), answers[row][col], notes[row][col]))
         answers[row][col] = 0
         notes[row][col] = 0
@@ -166,7 +204,10 @@ class Game {
         return bits
     }
 
-    fun cheatCell(row: Int, col: Int) {
+    fun cheatCell(
+        row: Int,
+        col: Int,
+    ) {
         setAnswer(row, col, getSolution(row, col))
         numberOfCheats++
     }
@@ -198,11 +239,20 @@ class Game {
         answers = Format.deepCopy(sudoku.solution!!)
     }
 
-    fun isValidColumn(row: Int, col: Int): Boolean = Validate.isValidColumn(row, col, answers)
+    fun isValidColumn(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidColumn(row, col, answers)
 
-    fun isValidRow(row: Int, col: Int): Boolean = Validate.isValidRow(row, col, answers)
+    fun isValidRow(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidRow(row, col, answers)
 
-    fun isValidBox(row: Int, col: Int): Boolean = Validate.isValidBox(row, col, answers)
+    fun isValidBox(
+        row: Int,
+        col: Int,
+    ): Boolean = Validate.isValidBox(row, col, answers)
 
     fun resetProgress() {
         answers = Format.deepCopy(sudoku.givens)

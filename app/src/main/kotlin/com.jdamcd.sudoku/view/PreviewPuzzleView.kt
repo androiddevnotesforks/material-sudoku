@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat
 import com.jdamcd.sudoku.R
 import com.jdamcd.sudoku.game.Game
 
-class PreviewPuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(context, attrs) {
-
+class PreviewPuzzleView(
+    context: Context,
+    attrs: AttributeSet,
+) : PuzzleView(context, attrs) {
     private var game: Game? = null
 
     private lateinit var solved: Paint
@@ -32,7 +34,10 @@ class PreviewPuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(cont
         return solved
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)
     }
 

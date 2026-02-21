@@ -3,8 +3,8 @@ apply plugin: 'kotlin'
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.assertj:assertj-core:3.18.1'
-    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.5'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.17.5'
 }
 
 // Workaround: https://code.google.com/p/android/issues/detail?id=64887

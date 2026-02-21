@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 
 class UndoTest {
-
     private lateinit var game: Game
 
     @Before

@@ -15,18 +15,20 @@ import java.util.Random
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PuzzleCompleteDialog : DialogFragment(), OnClickListener {
-
+class PuzzleCompleteDialog :
+    DialogFragment(),
+    OnClickListener {
     @Inject lateinit var settings: Settings
+
     @Inject lateinit var res: Resources
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireActivity())
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog
+            .Builder(requireActivity())
             .setTitle(generateGreeting())
             .setMessage(generateMessage())
             .setPositiveButton(android.R.string.ok, this)
             .create()
-    }
 
     private fun generateGreeting(): String {
         val greetings = res.getStringArray(R.array.complete_greetings)
@@ -53,7 +55,10 @@ class PuzzleCompleteDialog : DialogFragment(), OnClickListener {
         dialog?.setCanceledOnTouchOutside(false)
     }
 
-    override fun onClick(dialog: DialogInterface, which: Int) {
+    override fun onClick(
+        dialog: DialogInterface,
+        which: Int,
+    ) {
         dialog.dismiss()
         activity?.finish()
     }
@@ -64,7 +69,10 @@ class PuzzleCompleteDialog : DialogFragment(), OnClickListener {
         private const val ARGS_TIME = "time"
         private const val ARGS_CHEATS = "cheats"
 
-        fun newInstance(time: Long, cheats: Int): PuzzleCompleteDialog {
+        fun newInstance(
+            time: Long,
+            cheats: Int,
+        ): PuzzleCompleteDialog {
             val frag = PuzzleCompleteDialog()
             val args = Bundle()
             args.putLong(ARGS_TIME, time)

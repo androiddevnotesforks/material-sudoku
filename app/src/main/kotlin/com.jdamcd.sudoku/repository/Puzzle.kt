@@ -14,5 +14,5 @@ data class Puzzle(
     val time: Long,
     val isBookmarked: Boolean,
     val isCompleted: Boolean,
-    val numberOfCheats: Int
+    val numberOfCheats: Int,
 )

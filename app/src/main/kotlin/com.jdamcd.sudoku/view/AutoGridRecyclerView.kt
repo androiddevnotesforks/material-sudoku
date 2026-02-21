@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
 
 class AutoGridRecyclerView : RecyclerView {
-
     private var manager = GridLayoutManager(context, 2)
     private var columnWidth = -1
     private var scrollState: Parcelable? = null
@@ -26,7 +25,10 @@ class AutoGridRecyclerView : RecyclerView {
         init(context, attrs)
     }
 
-    private fun init(context: Context, attrs: AttributeSet?) {
+    private fun init(
+        context: Context,
+        attrs: AttributeSet?,
+    ) {
         if (attrs != null) {
             val attrsArray = intArrayOf(android.R.attr.columnWidth)
             val array = context.obtainStyledAttributes(attrs, attrsArray)
@@ -64,7 +66,10 @@ class AutoGridRecyclerView : RecyclerView {
         }
     }
 
-    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+    override fun onMeasure(
+        widthSpec: Int,
+        heightSpec: Int,
+    ) {
         super.onMeasure(widthSpec, heightSpec)
         if (columnWidth > 0) {
             manager.spanCount = max(2, measuredWidth / columnWidth)

@@ -10,22 +10,23 @@ import androidx.fragment.app.DialogFragment
 import com.jdamcd.sudoku.R
 
 @SuppressLint("ValidFragment")
-class ConfirmRestartDialog : DialogFragment(), OnClickListener {
-
+class ConfirmRestartDialog :
+    DialogFragment(),
+    OnClickListener {
     private var callback: RestartContract? = null
 
     interface RestartContract {
         fun onRestart()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireActivity())
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog
+            .Builder(requireActivity())
             .setTitle(R.string.dialog_restart)
             .setMessage(R.string.dialog_restart_warning)
             .setNegativeButton(android.R.string.cancel, this)
             .setPositiveButton(android.R.string.ok, this)
             .create()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -38,7 +39,10 @@ class ConfirmRestartDialog : DialogFragment(), OnClickListener {
         dialog?.setCanceledOnTouchOutside(false)
     }
 
-    override fun onClick(dialog: DialogInterface, which: Int) {
+    override fun onClick(
+        dialog: DialogInterface,
+        which: Int,
+    ) {
         when (which) {
             DialogInterface.BUTTON_POSITIVE -> {
                 callback?.onRestart()

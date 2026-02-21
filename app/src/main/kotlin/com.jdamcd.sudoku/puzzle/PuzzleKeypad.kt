@@ -10,9 +10,9 @@ internal class PuzzleKeypad(
     val onSetValue: (Int) -> Unit,
     val onSetNote: (Int) -> Unit,
     val onClearValue: () -> Unit,
-    val onToggleNotes: () -> Unit
-) : View.OnClickListener, View.OnLongClickListener {
-
+    val onToggleNotes: () -> Unit,
+) : View.OnClickListener,
+    View.OnLongClickListener {
     private var clear: View = root.findViewById(R.id.clear_cell)
     private var notes: CheckableImageButton = root.findViewById(R.id.note_toggle)
     private var numberKeys: Array<Button>
@@ -125,16 +125,17 @@ internal class PuzzleKeypad(
     }
 
     companion object {
-        private val NUMKEY_IDS = intArrayOf(
-            R.id.keypad_1,
-            R.id.keypad_2,
-            R.id.keypad_3,
-            R.id.keypad_4,
-            R.id.keypad_5,
-            R.id.keypad_6,
-            R.id.keypad_7,
-            R.id.keypad_8,
-            R.id.keypad_9
-        )
+        private val NUMKEY_IDS =
+            intArrayOf(
+                R.id.keypad_1,
+                R.id.keypad_2,
+                R.id.keypad_3,
+                R.id.keypad_4,
+                R.id.keypad_5,
+                R.id.keypad_6,
+                R.id.keypad_7,
+                R.id.keypad_8,
+                R.id.keypad_9,
+            )
     }
 }

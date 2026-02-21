@@ -16,85 +16,104 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-internal class PuzzleChoicePresenter @Inject constructor(
-    private val repository: PuzzleRepository,
-    private val eventBus: EventBus,
-    private val settings: Settings,
-    private val intents: IntentFactory
-) : Presenter<PuzzleChoicePresenter.View>() {
+internal class PuzzleChoicePresenter
+    @Inject
+    constructor(
+        private val repository: PuzzleRepository,
+        private val eventBus: EventBus,
+        private val settings: Settings,
+        private val intents: IntentFactory,
+    ) : Presenter<PuzzleChoicePresenter.View>() {
+        override fun start(view: View) {
+            super.start(view)
 
-    override fun start(view: View) {
-        super.start(view)
+            if (BuildConfig.GOOGLE && !settings.ratingPromptShown) {
+                setupRatingPrompt(view)
+            }
 
-        if (BuildConfig.GOOGLE && !settings.ratingPromptShown) {
-            setupRatingPrompt(view)
+            addSubscription(
+                view
+                    .onToggleCompleted()
+                    .subscribe {
+                        settings.hideCompleted = it
+                        eventBus.publish(if (it) HideCompletedEvent.HIDE else HideCompletedEvent.SHOW)
+                    },
+            )
+
+            addSubscription(
+                view
+                    .onFabClick()
+                    .subscribe {
+                        playRandomPuzzle(view, it)
+                    },
+            )
         }
 
-        addSubscription(
-            view.onToggleCompleted()
-                .subscribe {
-                    settings.hideCompleted = it
-                    eventBus.publish(if (it) HideCompletedEvent.HIDE else HideCompletedEvent.SHOW)
-                }
-        )
+        fun playRandomPuzzle(
+            view: View,
+            level: Level,
+        ) {
+            addSubscription(
+                repository
+                    .getRandomUnplayedPuzzleId(level)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { id -> view.getContext().startActivity(intents.getPuzzle(id)) },
+                        { view.showRandomError() },
+                    ),
+            )
+        }
 
-        addSubscription(
-            view.onFabClick()
-                .subscribe {
-                    playRandomPuzzle(view, it)
-                }
-        )
+        private fun setupRatingPrompt(view: View) {
+            addSubscription(
+                repository
+                    .countCompleted()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { count ->
+                        if (count >= Settings.RATING_THRESHOLD && !settings.ratingPromptShown) {
+                            view.showRatingPrompt()
+                        }
+                    },
+            )
+        }
+
+        fun loadInProgressPuzzle(
+            resumeId: Long,
+            prompt: Boolean,
+        ) {
+            addSubscription(
+                repository
+                    .getPuzzle(resumeId)
+                    .filter { puzzle ->
+                        !puzzle.isCompleted &&
+                            puzzle.game.getNumberOfCorrectAnswers() > 0
+                    }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { puzzle ->
+                        if (prompt) {
+                            view?.showResumePrompt(puzzle)
+                        } else {
+                            view?.openPuzzle(puzzle)
+                        }
+                    },
+            )
+        }
+
+        internal interface View : PresenterView {
+            fun showRatingPrompt()
+
+            fun showRandomError()
+
+            fun showResumePrompt(puzzle: Puzzle)
+
+            fun openPuzzle(puzzle: Puzzle)
+
+            fun onToggleCompleted(): Observable<Boolean>
+
+            fun onFabClick(): Observable<Level>
+
+            fun getContext(): Context
+        }
     }
-
-    fun playRandomPuzzle(view: View, level: Level) {
-        addSubscription(
-            repository.getRandomUnplayedPuzzleId(level)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { id -> view.getContext().startActivity(intents.getPuzzle(id)) },
-                    { view.showRandomError() }
-                )
-        )
-    }
-
-    private fun setupRatingPrompt(view: View) {
-        addSubscription(
-            repository.countCompleted()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { count ->
-                    if (count >= Settings.RATING_THRESHOLD && !settings.ratingPromptShown) {
-                        view.showRatingPrompt()
-                    }
-                }
-        )
-    }
-
-    fun loadInProgressPuzzle(resumeId: Long, prompt: Boolean) {
-        addSubscription(
-            repository.getPuzzle(resumeId)
-                .filter { puzzle ->
-                    !puzzle.isCompleted &&
-                        puzzle.game.getNumberOfCorrectAnswers() > 0
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { puzzle ->
-                    if (prompt) view?.showResumePrompt(puzzle)
-                    else view?.openPuzzle(puzzle)
-                }
-        )
-    }
-
-    internal interface View : PresenterView {
-        fun showRatingPrompt()
-        fun showRandomError()
-        fun showResumePrompt(puzzle: Puzzle)
-        fun openPuzzle(puzzle: Puzzle)
-
-        fun onToggleCompleted(): Observable<Boolean>
-        fun onFabClick(): Observable<Level>
-        fun getContext(): Context
-    }
-}

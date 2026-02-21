@@ -5,8 +5,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.jdamcd.sudoku.R
 
 class LicensesFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         addPreferencesFromResource(R.xml.licenses)
     }
 }

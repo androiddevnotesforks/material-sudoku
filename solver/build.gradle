@@ -2,45 +2,50 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion '30.0.2'
+    namespace 'com.jdamcd.sudokusolver'
+    compileSdk 35
 
     defaultConfig {
         applicationId 'com.jdamcd.sudokusolver'
         minSdkVersion 23
-        targetSdkVersion 32
+        targetSdkVersion 35
         versionCode Integer.parseInt(project.SOLVER_VERSION_CODE)
         versionName project.SOLVER_VERSION_NAME + '-' + versionCode
         project.ext.set('archivesBaseName', 'solver-' + versionName)
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
     buildTypes {
         release {
             minifyEnabled true
-            zipAlignEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android.txt'),
                     'proguard-rules.pro'
         }
     }
 
-    lintOptions {
+    lint {
         disable 'IncludeLayoutParam'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 
 dependencies {
     implementation project(':core')
 
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
+    implementation 'androidx.activity:activity-ktx:1.9.3'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }

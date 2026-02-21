@@ -23,9 +23,8 @@ data class PuzzleLoad(
     @ColumnInfo(name = "bookmarked") val bookmarked: Boolean?,
     @ColumnInfo(name = "progress") val progress: Int?,
     @ColumnInfo(name = "completed") val completed: Boolean?,
-    @ColumnInfo(name = "cheats") val cheats: Int?
+    @ColumnInfo(name = "cheats") val cheats: Int?,
 ) {
-
     fun toPuzzle(strings: Strings): Puzzle {
         val mappedLevel = Level.fromId(level)
         val sudoku = Sudoku(givens)
@@ -43,17 +42,20 @@ data class PuzzleLoad(
             time ?: 0,
             bookmarked ?: false,
             completed ?: false,
-            cheats ?: 0
+            cheats ?: 0,
         )
     }
 
-    private fun game(sudoku: Sudoku, game: String?, notes: String?): Game {
-        return if (!game.isNullOrEmpty() && !notes.isNullOrEmpty()) {
+    private fun game(
+        sudoku: Sudoku,
+        game: String?,
+        notes: String?,
+    ): Game =
+        if (!game.isNullOrEmpty() && !notes.isNullOrEmpty()) {
             Game(sudoku, Format.gridFromString(game), Format.deserialiseNotes(notes))
         } else if (!game.isNullOrEmpty()) {
             Game(sudoku, Format.gridFromString(game))
         } else {
             Game(sudoku)
         }
-    }
 }

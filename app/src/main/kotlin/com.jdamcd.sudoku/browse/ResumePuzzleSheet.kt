@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ResumePuzzleSheet : BottomSheetDialogFragment() {
-
     @Inject lateinit var intents: IntentFactory
+
     @Inject lateinit var settings: Settings
 
     private var _binding: FragmentResumePuzzleBinding? = null
@@ -43,17 +43,24 @@ class ResumePuzzleSheet : BottomSheetDialogFragment() {
     }
 
     private fun setPeekHeight() {
-        val behavior = BottomSheetBehavior.from(dialog?.findViewById(R.id.design_bottom_sheet)!!)
+        val behavior = BottomSheetBehavior.from(dialog?.findViewById(com.google.android.material.R.id.design_bottom_sheet)!!)
         behavior.peekHeight = resources.getDimensionPixelSize(R.dimen.resume_sheet_height)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         val view = View.inflate(ContextThemeWrapper(context, R.style.SudokuTheme), R.layout.fragment_resume_puzzle, container)
         _binding = FragmentResumePuzzleBinding.bind(view)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         val arguments = requireArguments()
         binding.title.text = getString(R.string.resume_title, arguments[PARAM_NAME] as String)
         binding.timePlayed.text = arguments[PARAM_TIME] as String
@@ -81,12 +88,13 @@ class ResumePuzzleSheet : BottomSheetDialogFragment() {
     companion object {
         fun forPuzzle(puzzle: Puzzle): ResumePuzzleSheet {
             val resumePrompt = ResumePuzzleSheet()
-            resumePrompt.arguments = bundleOf(
-                PARAM_ID to puzzle.id,
-                PARAM_NAME to puzzle.title,
-                PARAM_TIME to Strings.formatTime(puzzle.time),
-                PARAM_PROGRESS to formatProgress(puzzle)
-            )
+            resumePrompt.arguments =
+                bundleOf(
+                    PARAM_ID to puzzle.id,
+                    PARAM_NAME to puzzle.title,
+                    PARAM_TIME to Strings.formatTime(puzzle.time),
+                    PARAM_PROGRESS to formatProgress(puzzle),
+                )
             return resumePrompt
         }
 

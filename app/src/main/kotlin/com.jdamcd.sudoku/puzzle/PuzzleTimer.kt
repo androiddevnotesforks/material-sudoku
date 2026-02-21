@@ -4,24 +4,26 @@ import android.os.Handler
 import android.os.Looper
 import com.jdamcd.sudoku.util.Strings
 
-internal class PuzzleTimer(private val callback: UpdateCallback) {
-
+internal class PuzzleTimer(
+    private val callback: UpdateCallback,
+) {
     private val timeHandler = Handler(Looper.getMainLooper())
     private var startTime = 0L
     private var timeOffset = 0L
     private var currentText: String? = null
 
-    private val updateTimeTask = object : Runnable {
-        override fun run() {
-            val updatedText = this@PuzzleTimer.toString()
-            if (updatedText != currentText) {
-                callback.update(updatedText)
-                currentText = updatedText
+    private val updateTimeTask =
+        object : Runnable {
+            override fun run() {
+                val updatedText = this@PuzzleTimer.toString()
+                if (updatedText != currentText) {
+                    callback.update(updatedText)
+                    currentText = updatedText
+                }
+                timeHandler.removeCallbacks(this)
+                timeHandler.postDelayed(this, UPDATE_INTERVAL)
             }
-            timeHandler.removeCallbacks(this)
-            timeHandler.postDelayed(this, UPDATE_INTERVAL)
         }
-    }
 
     interface UpdateCallback {
         fun update(time: String)
@@ -36,7 +38,10 @@ internal class PuzzleTimer(private val callback: UpdateCallback) {
         startTime = System.currentTimeMillis()
     }
 
-    fun setStartAt(time: Long, update: Boolean) {
+    fun setStartAt(
+        time: Long,
+        update: Boolean,
+    ) {
         timeOffset = time
         callback.update(if (update) toString() else Strings.EMPTY)
     }

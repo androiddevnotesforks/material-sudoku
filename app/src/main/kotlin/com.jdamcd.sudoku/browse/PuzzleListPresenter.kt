@@ -16,46 +16,56 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-internal class PuzzleListPresenter @Inject constructor(
-    private val repository: PuzzleRepository,
-    private val eventBus: EventBus,
-    private val settings: Settings,
-    private val intents: IntentFactory
-) : Presenter<PuzzleListPresenter.View>() {
+internal class PuzzleListPresenter
+    @Inject
+    constructor(
+        private val repository: PuzzleRepository,
+        private val eventBus: EventBus,
+        private val settings: Settings,
+        private val intents: IntentFactory,
+    ) : Presenter<PuzzleListPresenter.View>() {
+        private var listDisposable = Disposables.empty()
 
-    private var listDisposable = Disposables.empty()
+        override fun start(view: View) {
+            super.start(view)
 
-    override fun start(view: View) {
-        super.start(view)
+            setListSubscription(view, settings.hideCompleted)
 
-        setListSubscription(view, settings.hideCompleted)
+            addSubscription(
+                eventBus
+                    .listen(HideCompletedEvent::class.java)
+                    .map { it == HideCompletedEvent.HIDE }
+                    .subscribe { setListSubscription(view, it) },
+            )
 
-        addSubscription(
-            eventBus.listen(HideCompletedEvent::class.java)
-                .map { it == HideCompletedEvent.HIDE }
-                .subscribe { setListSubscription(view, it) }
-        )
+            addSubscription(
+                view
+                    .onPuzzleClicked()
+                    .subscribe { view.getContext()?.startActivity(intents.getPuzzle(it.id)) },
+            )
+        }
 
-        addSubscription(
-            view.onPuzzleClicked()
-                .subscribe { view.getContext()?.startActivity(intents.getPuzzle(it.id)) }
-        )
+        private fun setListSubscription(
+            view: View,
+            hideCompleted: Boolean,
+        ) {
+            removeSubscription(listDisposable)
+            listDisposable =
+                repository
+                    .getPuzzles(view.getLevel(), hideCompleted)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { view.showPuzzles(it) }
+            addSubscription(listDisposable)
+        }
+
+        internal interface View : PresenterView {
+            fun showPuzzles(puzzles: List<Puzzle>)
+
+            fun onPuzzleClicked(): Observable<Puzzle>
+
+            fun getLevel(): Level
+
+            fun getContext(): Context?
+        }
     }
-
-    private fun setListSubscription(view: View, hideCompleted: Boolean) {
-        removeSubscription(listDisposable)
-        listDisposable = repository.getPuzzles(view.getLevel(), hideCompleted)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { view.showPuzzles(it) }
-        addSubscription(listDisposable)
-    }
-
-    internal interface View : PresenterView {
-        fun showPuzzles(puzzles: List<Puzzle>)
-
-        fun onPuzzleClicked(): Observable<Puzzle>
-        fun getLevel(): Level
-        fun getContext(): Context?
-    }
-}

@@ -18,17 +18,23 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener {
-
+class SettingsFragment :
+    PreferenceFragmentCompat(),
+    OnPreferenceChangeListener {
     @Inject internal lateinit var info: AppInfo
+
     @Inject internal lateinit var intents: IntentFactory
+
     @Inject internal lateinit var settings: Settings
 
     init {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         addPreferencesFromResource(R.xml.settings)
         findPreference<Preference>(KEY_VERSION)?.summary = info.getVersion()
         findPreference<Preference>(KEY_NIGHT_MODE)?.isVisible = !settings.useSystemTheme
@@ -40,7 +46,10 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
             .forEach { findPreference<Preference>(it)?.onPreferenceChangeListener = this }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         inflater.inflate(R.menu.activity_settings, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -72,7 +81,10 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
         }
     }
 
-    override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
+    override fun onPreferenceChange(
+        preference: Preference,
+        newValue: Any,
+    ): Boolean {
         when (preference.key) {
             KEY_SYSTEM_THEME -> toggleSystemTheme(newValue as Boolean)
             KEY_NIGHT_MODE -> toggleNightMode(newValue as Boolean)
@@ -87,14 +99,17 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
                 enabled -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 settings.nightMode -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> AppCompatDelegate.MODE_NIGHT_NO
-            }
+            },
         )
     }
 
     private fun toggleNightMode(enabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            if (enabled) AppCompatDelegate.MODE_NIGHT_YES
-            else AppCompatDelegate.MODE_NIGHT_NO
+            if (enabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            },
         )
     }
 

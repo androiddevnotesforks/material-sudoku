@@ -10,18 +10,19 @@ import org.junit.After
 import org.junit.Before
 
 open class DatabaseTest {
-
     private lateinit var db: PuzzleDatabase
     protected lateinit var dao: PuzzleDao
 
     @Before
     open fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        db = Room.databaseBuilder(context, PuzzleDatabase::class.java, AssetDb.NAME)
-            .createFromAsset(AssetDb.PATH)
-            .addMigrations(PuzzleDatabase.MIGRATION_1_2)
-            .allowMainThreadQueries()
-            .build()
+        db =
+            Room
+                .databaseBuilder(context, PuzzleDatabase::class.java, AssetDb.NAME)
+                .createFromAsset(AssetDb.PATH)
+                .addMigrations(PuzzleDatabase.MIGRATION_1_2)
+                .allowMainThreadQueries()
+                .build()
         dao = db.puzzleDao()
     }
 
@@ -33,7 +34,7 @@ open class DatabaseTest {
                 .getInstrumentation()
                 .targetContext
                 .getDatabasePath(AssetDb.NAME)
-                .delete()
+                .delete(),
         ).isTrue()
     }
 }

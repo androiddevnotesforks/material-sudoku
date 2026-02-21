@@ -11,7 +11,8 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 internal class AppModule {
-
     @Provides
-    fun provideResources(@ApplicationContext context: Context): Resources = context.resources
+    fun provideResources(
+        @ApplicationContext context: Context,
+    ): Resources = context.resources
 }

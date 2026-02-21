@@ -10,9 +10,13 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.jdamcd.sudokusolver.R
 
-class AboutFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+class AboutFragment :
+    PreferenceFragmentCompat(),
+    Preference.OnPreferenceClickListener {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         addPreferencesFromResource(R.xml.about)
         findPreference<Preference>(KEY_PLAY)?.onPreferenceClickListener = this
         findPreference<Preference>(KEY_RATE)?.onPreferenceClickListener = this
@@ -33,13 +37,14 @@ class AboutFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickLi
     private fun openLink(link: String) {
         try {
             startActivity(Intent(ACTION_VIEW, Uri.parse(link)))
-        } catch (e: ActivityNotFoundException) {}
+        } catch (e: ActivityNotFoundException) {
+        }
     }
 
     private fun getAppVersion(): String {
         val thisContext = requireContext().applicationContext
         return try {
-            thisContext.packageManager.getPackageInfo(thisContext.packageName, 0).versionName
+            thisContext.packageManager.getPackageInfo(thisContext.packageName, 0).versionName ?: "Unknown"
         } catch (e: PackageManager.NameNotFoundException) {
             "Unknown"
         }

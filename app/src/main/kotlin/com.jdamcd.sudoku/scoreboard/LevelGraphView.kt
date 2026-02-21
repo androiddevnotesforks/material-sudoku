@@ -14,8 +14,11 @@ import androidx.annotation.Keep
 import com.jdamcd.sudoku.R
 import java.util.Arrays
 
-class LevelGraphView(context: Context, attrs: AttributeSet) : View(context, attrs), AnimatorUpdateListener {
-
+class LevelGraphView(
+    context: Context,
+    attrs: AttributeSet,
+) : View(context, attrs),
+    AnimatorUpdateListener {
     private var counts: IntArray = IntArray(NUM_BARS)
     private val barWidths: IntArray = IntArray(NUM_BARS)
 
@@ -43,13 +46,14 @@ class LevelGraphView(context: Context, attrs: AttributeSet) : View(context, attr
     }
 
     private fun startBarAnimations() {
-        val animator = ObjectAnimator.ofPropertyValuesHolder(
-            this,
-            PropertyValuesHolder.ofInt("easyWidth", MIN_WIDTH, getBarWidth(0)),
-            PropertyValuesHolder.ofInt("normalWidth", MIN_WIDTH, getBarWidth(1)),
-            PropertyValuesHolder.ofInt("hardWidth", MIN_WIDTH, getBarWidth(2)),
-            PropertyValuesHolder.ofInt("extremeWidth", MIN_WIDTH, getBarWidth(3))
-        )
+        val animator =
+            ObjectAnimator.ofPropertyValuesHolder(
+                this,
+                PropertyValuesHolder.ofInt("easyWidth", MIN_WIDTH, getBarWidth(0)),
+                PropertyValuesHolder.ofInt("normalWidth", MIN_WIDTH, getBarWidth(1)),
+                PropertyValuesHolder.ofInt("hardWidth", MIN_WIDTH, getBarWidth(2)),
+                PropertyValuesHolder.ofInt("extremeWidth", MIN_WIDTH, getBarWidth(3)),
+            )
 
         animator.startDelay = ANIM_DELAY.toLong()
         animator.duration = ANIM_TIME.toLong()
@@ -58,7 +62,12 @@ class LevelGraphView(context: Context, attrs: AttributeSet) : View(context, attr
         animator.start()
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+    override fun onSizeChanged(
+        width: Int,
+        height: Int,
+        oldWidth: Int,
+        oldHeight: Int,
+    ) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         this.graphWidth = width
         barHeight = height / NUM_BARS
@@ -74,7 +83,10 @@ class LevelGraphView(context: Context, attrs: AttributeSet) : View(context, attr
         }
     }
 
-    private fun drawBar(canvas: Canvas, i: Int) {
+    private fun drawBar(
+        canvas: Canvas,
+        i: Int,
+    ) {
         barPaint.color = barColours[i % barColours.size]
         canvas.drawRect(0f, (i * barHeight).toFloat(), barWidths[i].toFloat(), ((i + 1) * barHeight).toFloat(), barPaint)
     }

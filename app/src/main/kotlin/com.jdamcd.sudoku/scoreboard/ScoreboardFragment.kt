@@ -20,19 +20,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ScoreboardFragment : Fragment(), ScoreboardPresenter.View {
-
+class ScoreboardFragment :
+    Fragment(),
+    ScoreboardPresenter.View {
     @Inject internal lateinit var presenter: ScoreboardPresenter
 
     private var _binding: FragmentScoreboardBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, bundle: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        bundle: Bundle?,
+    ): View {
         _binding = FragmentScoreboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         presenter.start(this)
     }
 
@@ -42,7 +50,10 @@ class ScoreboardFragment : Fragment(), ScoreboardPresenter.View {
         _binding = null
     }
 
-    override fun showSummary(count: Int, countsByLevel: IntArray) {
+    override fun showSummary(
+        count: Int,
+        countsByLevel: IntArray,
+    ) {
         val card = binding.scorecardSummary
         if (count == 0) {
             card.summaryEmpty.visibility = View.VISIBLE
@@ -72,7 +83,12 @@ class ScoreboardFragment : Fragment(), ScoreboardPresenter.View {
         displayCard(completed[0].level, completed.size, best, averageTime)
     }
 
-    private fun displayCard(level: Level, puzzlesCompleted: Int, best: BestTime, averageTime: Long) {
+    private fun displayCard(
+        level: Level,
+        puzzlesCompleted: Int,
+        best: BestTime,
+        averageTime: Long,
+    ) {
         val cardView = getCardView(level)
         val title = cardView.findViewById<TextView>(R.id.level)
         title.text = getString(level.nameId)
@@ -93,17 +109,20 @@ class ScoreboardFragment : Fragment(), ScoreboardPresenter.View {
         return puzzle
     }
 
-    private fun getCardView(level: Level): View {
-        return when (level) {
+    private fun getCardView(level: Level): View =
+        when (level) {
             EASY -> binding.scorecardEasy.root
             MEDIUM -> binding.scorecardMedium.root
             HARD -> binding.scorecardMedium.root
             EXTREME -> binding.scorecardExtreme.root
             else -> throw IllegalStateException("Unexpected level")
         }
-    }
 
-    private fun setText(root: View, textViewId: Int, text: String) {
+    private fun setText(
+        root: View,
+        textViewId: Int,
+        text: String,
+    ) {
         root.findViewById<TextView>(textViewId).text = text
     }
 
@@ -112,18 +131,21 @@ class ScoreboardFragment : Fragment(), ScoreboardPresenter.View {
         var cheats = Integer.MAX_VALUE
         lateinit var puzzle: String
 
-        operator fun set(time: Long, cheats: Int, puzzle: String) {
+        operator fun set(
+            time: Long,
+            cheats: Int,
+            puzzle: String,
+        ) {
             this.time = time
             this.cheats = cheats
             this.puzzle = puzzle
         }
 
-        fun hasCheats(): Boolean {
-            return cheats > 0
-        }
+        fun hasCheats(): Boolean = cheats > 0
 
-        fun worseThan(time: Long, cheats: Int): Boolean {
-            return cheats < this.cheats || cheats == this.cheats && time < this.time
-        }
+        fun worseThan(
+            time: Long,
+            cheats: Int,
+        ): Boolean = cheats < this.cheats || cheats == this.cheats && time < this.time
     }
 }

@@ -11,25 +11,25 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PuzzleDaoTest : DatabaseTest() {
-
     @Test
     fun loadsSinglePuzzle() {
         val actual = dao.getPuzzle(25L).blockingGet()
 
-        val expected = PuzzleLoad(
-            25L,
-            "easy",
-            25,
-            "005406700060090030304000506900060005030109060200040008409000601010070050002608900",
-            "125436789867591234394782516941867325538129467276345198489253671613974852752618943",
-            Strings.EMPTY,
-            Strings.EMPTY,
-            0,
-            false,
-            0,
-            false,
-            0
-        )
+        val expected =
+            PuzzleLoad(
+                25L,
+                "easy",
+                25,
+                "005406700060090030304000506900060005030109060200040008409000601010070050002608900",
+                "125436789867591234394782516941867325538129467276345198489253671613974852752618943",
+                Strings.EMPTY,
+                Strings.EMPTY,
+                0,
+                false,
+                0,
+                false,
+                0,
+            )
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -123,30 +123,32 @@ class PuzzleDaoTest : DatabaseTest() {
 
         val actual = dao.getPuzzle(25L).blockingGet()
 
-        val expected = PuzzleLoad(
-            25L,
-            "easy",
-            25,
-            "005406700060090030304000506900060005030109060200040008409000601010070050002608900",
-            "125436789867591234394782516941867325538129467276345198489253671613974852752618943",
-            "test-game",
-            "test-notes",
-            1234,
-            true,
-            20,
-            false,
-            1
-        )
+        val expected =
+            PuzzleLoad(
+                25L,
+                "easy",
+                25,
+                "005406700060090030304000506900060005030109060200040008409000601010070050002608900",
+                "125436789867591234394782516941867325538129467276345198489253671613974852752618943",
+                "test-game",
+                "test-notes",
+                1234,
+                true,
+                20,
+                false,
+                1,
+            )
         assertThat(actual).isEqualTo(expected)
     }
 
     @Test
     fun bulkInsertsPuzzles() {
-        val saves = setOf(
-            PuzzleSave.forCompleted(1L, "test1", 123L, 0),
-            PuzzleSave.forCompleted(12L, "test2", 456L, 3),
-            PuzzleSave.forCompleted(123L, "test3", 1234L, 0)
-        )
+        val saves =
+            setOf(
+                PuzzleSave.forCompleted(1L, "test1", 123L, 0),
+                PuzzleSave.forCompleted(12L, "test2", 456L, 3),
+                PuzzleSave.forCompleted(123L, "test3", 1234L, 0),
+            )
         dao.bulkUpdatePuzzles(saves)
 
         val actual = dao.getCompletedPuzzles().blockingFirst()

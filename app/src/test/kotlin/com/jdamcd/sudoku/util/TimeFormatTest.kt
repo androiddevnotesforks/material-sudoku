@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class TimeFormatTest {
-
     @Test
     fun noTime() {
         val formatted = Strings.formatTime(0)

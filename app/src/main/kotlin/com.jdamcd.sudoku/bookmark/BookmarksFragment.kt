@@ -20,9 +20,11 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BookmarksFragment : Fragment(), BookmarksPresenter.View {
-
+class BookmarksFragment :
+    Fragment(),
+    BookmarksPresenter.View {
     @Inject internal lateinit var presenter: BookmarksPresenter
+
     @Inject lateinit var adapter: PuzzleAdapter
 
     private val removeAllSubject = PublishSubject.create<Any>()
@@ -34,12 +36,19 @@ class BookmarksFragment : Fragment(), BookmarksPresenter.View {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentRecyclerBookmarksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         binding.recyclerView.addItemDecoration(OffsetDecoration(requireContext(), R.dimen.half_gutter))
         (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         presenter.start(this)
@@ -54,7 +63,10 @@ class BookmarksFragment : Fragment(), BookmarksPresenter.View {
         binding.loading.root.visibility = View.GONE
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         inflater.inflate(R.menu.activity_bookmarks, menu)
     }
 

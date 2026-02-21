@@ -12,19 +12,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal class DatabaseModule {
-
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): PuzzleDatabase {
-        return Room.databaseBuilder(context, PuzzleDatabase::class.java, AssetDb.NAME)
+    fun provideDatabase(
+        @ApplicationContext context: Context,
+    ): PuzzleDatabase =
+        Room
+            .databaseBuilder(context, PuzzleDatabase::class.java, AssetDb.NAME)
             .createFromAsset(AssetDb.PATH)
             .addMigrations(PuzzleDatabase.MIGRATION_1_2)
             .fallbackToDestructiveMigration()
             .build()
-    }
 
     @Provides
-    fun providePuzzleDao(db: PuzzleDatabase): PuzzleDao {
-        return db.puzzleDao()
-    }
+    fun providePuzzleDao(db: PuzzleDatabase): PuzzleDao = db.puzzleDao()
 }

@@ -14,8 +14,10 @@ import com.jdamcd.sudokusolver.R
 import kotlin.math.max
 import kotlin.math.min
 
-class InteractivePuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(context, attrs) {
-
+class InteractivePuzzleView(
+    context: Context,
+    attrs: AttributeSet,
+) : PuzzleView(context, attrs) {
     private var hasRestoredState = false
     private var interactionEnabled = true
 
@@ -84,7 +86,7 @@ class InteractivePuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(
                         puzzleData!!.getSolutionCellValue(row, col).toString() + "",
                         padWidth + col * cellWidth + digitX,
                         padHeight + row * cellHeight + digitY,
-                        solved
+                        solved,
                     )
                 }
             }
@@ -142,15 +144,20 @@ class InteractivePuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(
         }
     }
 
-    private fun isValidCell(pressY: Int, pressX: Int): Boolean {
-        return pressX > -1 && pressX < 9 && pressY > -1 && pressY < 9
-    }
+    private fun isValidCell(
+        pressY: Int,
+        pressX: Int,
+    ): Boolean = pressX > -1 && pressX < 9 && pressY > -1 && pressY < 9
 
-    private fun isDifferentCell(pressY: Int, pressX: Int): Boolean {
-        return !(pressX == cursorCol && pressY == cursorRow)
-    }
+    private fun isDifferentCell(
+        pressY: Int,
+        pressX: Int,
+    ): Boolean = !(pressX == cursorCol && pressY == cursorRow)
 
-    private fun selectPressedCell(row: Int, col: Int) {
+    private fun selectPressedCell(
+        row: Int,
+        col: Int,
+    ) {
         if (selectedRect != null) {
             invalidate()
         }
@@ -162,10 +169,16 @@ class InteractivePuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(
     }
 
     fun getCursorPosition(): CellPosition =
-        if (selectedRect == null) CellPosition()
-        else CellPosition(cursorRow, cursorCol)
+        if (selectedRect == null) {
+            CellPosition()
+        } else {
+            CellPosition(cursorRow, cursorCol)
+        }
 
-    private fun setCursor(row: Int, col: Int) {
+    private fun setCursor(
+        row: Int,
+        col: Int,
+    ) {
         cursorRow = row
         cursorCol = col
         selectedRect = getCellRect(row, col)
@@ -183,40 +196,32 @@ class InteractivePuzzleView(context: Context, attrs: AttributeSet) : PuzzleView(
         }
     }
 
-    private fun getCellRect(row: Int, col: Int): Rect {
-        return Rect(left(col), top(row), right(col), bottom(row))
-    }
+    private fun getCellRect(
+        row: Int,
+        col: Int,
+    ): Rect = Rect(left(col), top(row), right(col), bottom(row))
 
-    private fun getRowRect(row: Int): Rect {
-        return Rect(0, top(row), width, bottom(row))
-    }
+    private fun getRowRect(row: Int): Rect = Rect(0, top(row), width, bottom(row))
 
-    private fun getColRect(col: Int): Rect {
-        return Rect(left(col), 0, right(col), height)
-    }
+    private fun getColRect(col: Int): Rect = Rect(left(col), 0, right(col), height)
 
-    private fun getBoxRect(row: Int, col: Int): Rect {
+    private fun getBoxRect(
+        row: Int,
+        col: Int,
+    ): Rect {
         // Get top left cell of box with int division
         val boxX = col / 3 * 3
         val boxY = row / 3 * 3
         return Rect(left(boxX), top(boxY), right(boxX + 2), bottom(boxY + 2))
     }
 
-    private fun left(col: Int): Int {
-        return if (col == 0) 0 else (col * cellWidth + padWidth).toInt()
-    }
+    private fun left(col: Int): Int = if (col == 0) 0 else (col * cellWidth + padWidth).toInt()
 
-    private fun right(col: Int): Int {
-        return if (col == 8) width else (col * cellWidth + cellWidth + padWidth).toInt()
-    }
+    private fun right(col: Int): Int = if (col == 8) width else (col * cellWidth + cellWidth + padWidth).toInt()
 
-    private fun top(row: Int): Int {
-        return if (row == 0) 0 else (row * cellHeight + padHeight).toInt()
-    }
+    private fun top(row: Int): Int = if (row == 0) 0 else (row * cellHeight + padHeight).toInt()
 
-    private fun bottom(row: Int): Int {
-        return if (row == 8) height else (row * cellHeight + cellHeight + padHeight).toInt()
-    }
+    private fun bottom(row: Int): Int = if (row == 8) height else (row * cellHeight + cellHeight + padHeight).toInt()
 
     fun setOnCellSelectedListener(listener: OnCellSelectedListener) {
         this.listener = listener

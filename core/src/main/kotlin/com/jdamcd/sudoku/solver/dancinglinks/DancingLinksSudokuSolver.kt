@@ -5,7 +5,6 @@ import com.jdamcd.sudoku.solver.UnsolvablePuzzleException
 import java.util.ArrayList
 
 class DancingLinksSudokuSolver : Solver {
-
     private lateinit var arena: DancingLinksArena
 
     private fun initialiseArena(givens: Array<IntArray>): Boolean {

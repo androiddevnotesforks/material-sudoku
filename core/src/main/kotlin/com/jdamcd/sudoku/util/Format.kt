@@ -1,7 +1,6 @@
 package com.jdamcd.sudoku.util
 
 object Format {
-
     private const val CHAR_ZERO = 48
 
     fun gridFromString(givens: String): Array<IntArray> {

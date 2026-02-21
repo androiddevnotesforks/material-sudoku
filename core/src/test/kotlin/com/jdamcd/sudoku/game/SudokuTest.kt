@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 
 class SudokuTest {
-
     private lateinit var puzzle: Sudoku
 
     @Before
@@ -75,7 +74,8 @@ class SudokuTest {
 
     @Test
     fun implementsEquals() {
-        EqualsVerifier.forClass(Sudoku::class.java)
+        EqualsVerifier
+            .forClass(Sudoku::class.java)
             .suppress(Warning.NONFINAL_FIELDS)
             .verify()
     }
