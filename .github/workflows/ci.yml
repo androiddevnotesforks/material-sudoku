@@ -22,7 +22,7 @@ jobs:
         run: ./gradlew spotlessCheck app:lint
 
       - name: Assemble
-        run: ./gradlew app:assembleGoogleDebug
+        run: ./gradlew app:assembleGoogleDebug solver:assembleDebug
 
       - name: Test
         run: ./gradlew core:test app:testGoogleDebugUnitTest
