@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import androidx.core.os.BundleCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
@@ -47,8 +48,10 @@ class AutoGridRecyclerView : RecyclerView {
 
     override fun onRestoreInstanceState(state: Parcelable) {
         if (state is Bundle) {
-            scrollState = state.getParcelable(STAT_KEY_SCROLL)
-            super.onRestoreInstanceState(state.getParcelable(STATE_KEY_SUPER))
+            scrollState = BundleCompat.getParcelable(state, STAT_KEY_SCROLL, Parcelable::class.java)
+            super.onRestoreInstanceState(
+                BundleCompat.getParcelable(state, STATE_KEY_SUPER, Parcelable::class.java),
+            )
         } else {
             super.onRestoreInstanceState(state)
         }

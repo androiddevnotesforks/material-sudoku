@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.jdamcd.sudoku.R
@@ -54,7 +55,7 @@ class PuzzleListFragment :
 
     override fun onPuzzleClicked() = adapter.itemClicked()
 
-    override fun getLevel() = requireArguments()[PARAM_KEY_LEVEL] as Level
+    override fun getLevel() = BundleCompat.getSerializable(requireArguments(), PARAM_KEY_LEVEL, Level::class.java)!!
 
     override fun onDestroyView() {
         super.onDestroyView()

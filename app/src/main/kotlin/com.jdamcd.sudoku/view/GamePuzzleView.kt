@@ -10,6 +10,7 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
+import androidx.core.os.BundleCompat
 import com.jdamcd.sudoku.R
 import com.jdamcd.sudoku.game.CellPosition
 import com.jdamcd.sudoku.game.Game
@@ -350,7 +351,9 @@ class GamePuzzleView(
 
     override fun onRestoreInstanceState(state: Parcelable) {
         if (state is Bundle) {
-            super.onRestoreInstanceState(state.getParcelable(STATE_SUPER))
+            super.onRestoreInstanceState(
+                BundleCompat.getParcelable(state, STATE_SUPER, Parcelable::class.java),
+            )
             val cursor = state.getIntArray(STATE_CURSOR)
             cursorRow = cursor?.get(0) ?: NOT_SET
             cursorCol = cursor?.get(1) ?: NOT_SET

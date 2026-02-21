@@ -182,7 +182,7 @@ class PagerStripIndicator
             }
 
             val myWidth = measuredWidth
-            val childWidth = (0 until tabCount).sumBy { tabsContainer.getChildAt(it).measuredWidth }
+            val childWidth = (0 until tabCount).sumOf { tabsContainer.getChildAt(it).measuredWidth }
 
             if (!checkedTabWidths && childWidth > 0 && myWidth > 0) {
                 if (childWidth <= myWidth) {

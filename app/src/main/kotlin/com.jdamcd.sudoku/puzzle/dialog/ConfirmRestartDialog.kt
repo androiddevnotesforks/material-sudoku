@@ -19,24 +19,20 @@ class ConfirmRestartDialog :
         fun onRestart()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        AlertDialog
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        try {
+            callback = parentFragmentManager.findFragmentById(R.id.fragment_puzzle) as RestartContract
+        } catch (e: ClassCastException) {
+            throw ClassCastException("Must implement " + RestartContract::class.java.simpleName)
+        }
+        return AlertDialog
             .Builder(requireActivity())
             .setTitle(R.string.dialog_restart)
             .setMessage(R.string.dialog_restart_warning)
             .setNegativeButton(android.R.string.cancel, this)
             .setPositiveButton(android.R.string.ok, this)
             .create()
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        try {
-            callback = parentFragmentManager.findFragmentById(R.id.fragment_puzzle) as RestartContract
-        } catch (e: ClassCastException) {
-            throw ClassCastException("Must implement " + RestartContract::class.java.simpleName)
-        }
-
-        dialog?.setCanceledOnTouchOutside(false)
+            .apply { setCanceledOnTouchOutside(false) }
     }
 
     override fun onClick(

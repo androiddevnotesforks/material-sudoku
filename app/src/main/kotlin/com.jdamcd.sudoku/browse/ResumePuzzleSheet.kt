@@ -62,10 +62,10 @@ class ResumePuzzleSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?,
     ) {
         val arguments = requireArguments()
-        binding.title.text = getString(R.string.resume_title, arguments[PARAM_NAME] as String)
-        binding.timePlayed.text = arguments[PARAM_TIME] as String
-        binding.progressCount.text = arguments[PARAM_PROGRESS] as String
-        configureButton(arguments[PARAM_ID] as Long)
+        binding.title.text = getString(R.string.resume_title, arguments.getString(PARAM_NAME))
+        binding.timePlayed.text = arguments.getString(PARAM_TIME)
+        binding.progressCount.text = arguments.getString(PARAM_PROGRESS)
+        configureButton(arguments.getLong(PARAM_ID))
     }
 
     private fun configureButton(puzzleId: Long) {

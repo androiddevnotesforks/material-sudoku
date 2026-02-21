@@ -29,6 +29,7 @@ class PuzzleCompleteDialog :
             .setMessage(generateMessage())
             .setPositiveButton(android.R.string.ok, this)
             .create()
+            .apply { setCanceledOnTouchOutside(false) }
 
     private fun generateGreeting(): String {
         val greetings = res.getStringArray(R.array.complete_greetings)
@@ -48,11 +49,6 @@ class PuzzleCompleteDialog :
             builder.append(" ").append(resources.getQuantityString(R.plurals.puzzle_complete_cheats, cheats, cheats))
         }
         return builder.toString()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        dialog?.setCanceledOnTouchOutside(false)
     }
 
     override fun onClick(

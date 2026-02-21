@@ -1,13 +1,13 @@
 package com.jdamcd.sudoku.util
 
 object Format {
-    private const val CHAR_ZERO = 48
+    private val CHAR_ZERO = '0'.code
 
     fun gridFromString(givens: String): Array<IntArray> {
         val givensArray = IntArray(81)
         var i = 0
         for (value in givens.toCharArray()) {
-            givensArray[i++] = value.toInt() - CHAR_ZERO
+            givensArray[i++] = value.code - CHAR_ZERO
         }
         return gridFromArray(givensArray)
     }
