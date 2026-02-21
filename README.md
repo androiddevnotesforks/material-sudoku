@@ -2,7 +2,7 @@
 
 This is a clean and simple sudoku game, designed to feel at home on the Android platform. It was first published in 2013 as "Holo Sudoku", before being updated with the Material design language in early 2015. It was featured on Google Play and downloaded over a million times in its first year.
 
-As of 2021 this project is unmaintained.
+As of 2021 this project is more or less unmaintained.
 
 ## Screenshots
 
